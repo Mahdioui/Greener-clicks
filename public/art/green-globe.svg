@@ -1,0 +1,43 @@
+<svg width="260" height="260" viewBox="0 0 260 260" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <radialGradient id="globeBg" cx="50%" cy="40%" r="60%">
+      <stop offset="0%" stop-color="#BBF7D0"/>
+      <stop offset="100%" stop-color="#10B981"/>
+    </radialGradient>
+  </defs>
+
+  <rect width="260" height="260" rx="40" fill="#F9FAFB"/>
+
+  <!-- Globe shadow -->
+  <ellipse cx="130" cy="190" rx="70" ry="16" fill="#22C55E22"/>
+
+  <!-- Globe -->
+  <circle cx="130" cy="120" r="70" fill="url(#globeBg)"/>
+  <circle cx="130" cy="120" r="70" fill="none" stroke="#047857" stroke-width="2"/>
+
+  <!-- Meridians and parallels -->
+  <g stroke="#ECFDF5" stroke-width="1.3" opacity="0.9">
+    <ellipse cx="130" cy="120" rx="55" ry="25" fill="none"/>
+    <ellipse cx="130" cy="120" rx="40" ry="65" fill="none"/>
+    <ellipse cx="130" cy="120" rx="20" ry="65" fill="none"/>
+    <circle cx="130" cy="120" r="50" fill="none"/>
+  </g>
+
+  <!-- Simple continents -->
+  <path d="M90 110 C 82 90, 92 70, 115 65 C 132 62, 140 70, 147 80 C 152 88, 152 95, 147 104 C 140 116, 128 119, 116 120 C 102 122, 95 118, 90 110 Z" fill="#065F46DD"/>
+  <path d="M150 130 C 162 126, 176 130, 183 140 C 188 148, 188 156, 181 163 C 173 171, 160 173, 150 170 C 142 168, 138 162, 138 154 C 138 144, 143 133, 150 130 Z" fill="#047857DD"/>
+
+  <!-- Cables / connections -->
+  <g stroke="#10B981" stroke-width="1.6" stroke-linecap="round">
+    <path d="M60 210 C 90 195, 110 193, 130 196" fill="none"/>
+    <path d="M200 210 C 175 195, 155 193, 130 196" fill="none"/>
+  </g>
+
+  <!-- Mice -->
+  <g fill="#10B981" stroke="#065F46" stroke-width="1">
+    <rect x="45" y="202" width="20" height="12" rx="6"/>
+    <rect x="195" y="202" width="20" height="12" rx="6"/>
+  </g>
+</svg>
+
+

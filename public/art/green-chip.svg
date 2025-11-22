@@ -1,0 +1,49 @@
+<svg width="320" height="200" viewBox="0 0 320 200" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="chipBg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#022C22"/>
+      <stop offset="1" stop-color="#064E3B"/>
+    </linearGradient>
+  </defs>
+
+  <rect width="320" height="200" fill="#020617"/>
+
+  <!-- Circuit traces -->
+  <g stroke="#059669" stroke-width="1.6" stroke-linecap="round" opacity="0.75">
+    <path d="M20 40 H110 V70 H160" />
+    <path d="M300 60 H210 V90 H160" />
+    <path d="M40 150 H120 V130 H160" />
+    <path d="M300 140 H220 V120 H160" />
+    <path d="M60 20 V80 H120" />
+    <path d="M260 20 V80 H200" />
+  </g>
+
+  <!-- Chip body -->
+  <rect x="100" y="50" width="120" height="100" rx="16" fill="url(#chipBg)" stroke="#10B981" stroke-width="2"/>
+
+  <!-- Pins -->
+  <g fill="#10B981">
+    <rect x="112" y="42" width="4" height="8" rx="1"/>
+    <rect x="132" y="42" width="4" height="8" rx="1"/>
+    <rect x="152" y="42" width="4" height="8" rx="1"/>
+    <rect x="172" y="42" width="4" height="8" rx="1"/>
+    <rect x="192" y="42" width="4" height="8" rx="1"/>
+
+    <rect x="112" y="150" width="4" height="8" rx="1"/>
+    <rect x="132" y="150" width="4" height="8" rx="1"/>
+    <rect x="152" y="150" width="4" height="8" rx="1"/>
+    <rect x="172" y="150" width="4" height="8" rx="1"/>
+    <rect x="192" y="150" width="4" height="8" rx="1"/>
+  </g>
+
+  <!-- Leaf icon -->
+  <g transform="translate(130 76)">
+    <circle cx="30" cy="24" r="22" fill="#022C22" stroke="#6EE7B7" stroke-width="1.5"/>
+    <path d="M30 14 C 25 14 20 18 20 23 C 20 30 24 34 30 36 C 36 34 40 30 40 23 C 40 18 35 14 30 14 Z" fill="#6EE7B7"/>
+    <path d="M30 18 V34" stroke="#022C22" stroke-width="1.4" stroke-linecap="round"/>
+    <path d="M30 24 C 27 24 25 25 23.5 27" stroke="#022C22" stroke-width="1" stroke-linecap="round"/>
+    <path d="M30 24 C 33 24 35 25 36.5 27" stroke="#022C22" stroke-width="1" stroke-linecap="round"/>
+  </g>
+</svg>
+
+

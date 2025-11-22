@@ -42,56 +42,56 @@ export function ComparisonCard({
   const comparisons = [
     {
       icon: Car,
-      label: "Car Kilometers",
+      label: "Car kilometres",
       value: carKm.toFixed(1),
-      unit: "km",
-      color: "text-blue-600",
-      bgColor: "bg-blue-50",
+      unit: "km driven",
+      color: "text-sky-700",
+      tint: "bg-sky-50",
     },
     {
       icon: TreePine,
-      label: "Trees Needed / year",
+      label: "Trees needed / year",
       value: trees.toFixed(1),
-      unit: "trees",
-      color: "text-green-600",
-      bgColor: "bg-green-50",
+      unit: "average trees",
+      color: "text-emerald-700",
+      tint: "bg-emerald-50",
     },
     {
       icon: Battery,
-      label: "Smartphone Charges",
+      label: "Smartphone charges",
       value: charges.toFixed(0),
-      unit: "charges",
-      color: "text-purple-600",
-      bgColor: "bg-purple-50",
+      unit: "full charges",
+      color: "text-fuchsia-700",
+      tint: "bg-fuchsia-50",
     },
     shortFlights !== undefined && shortFlights > 0
       ? {
           icon: Plane,
-          label: "Short Flights",
+          label: "Short flights",
           value: shortFlights.toFixed(2),
-          unit: "one‑way flights",
-          color: "text-sky-600",
-          bgColor: "bg-sky-50",
+          unit: "one‑way trips",
+          color: "text-sky-700",
+          tint: "bg-sky-50",
         }
       : null,
     kettleBoils !== undefined && kettleBoils > 0
       ? {
           icon: Coffee,
-          label: "Kettle Boils",
+          label: "Kettle boils",
           value: kettleBoils.toFixed(0),
           unit: "cups of tea",
-          color: "text-amber-600",
-          bgColor: "bg-amber-50",
+          color: "text-amber-700",
+          tint: "bg-amber-50",
         }
       : null,
     streamingHours !== undefined && streamingHours > 0
       ? {
           icon: MonitorPlay,
-          label: "Streaming Hours",
+          label: "Streaming hours",
           value: streamingHours.toFixed(1),
           unit: "hrs of HD video",
-          color: "text-rose-600",
-          bgColor: "bg-rose-50",
+          color: "text-rose-700",
+          tint: "bg-rose-50",
         }
       : null,
   ].filter(Boolean) as {
@@ -100,7 +100,7 @@ export function ComparisonCard({
     value: string;
     unit: string;
     color: string;
-    bgColor: string;
+    tint: string;
   }[];
 
   return (
@@ -109,15 +109,27 @@ export function ComparisonCard({
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5, delay: 0.1 }}
     >
-      <Card>
-        <CardHeader>
-          <CardTitle>Environmental Impact</CardTitle>
+      <Card className="border-slate-200 bg-white/90 shadow-sm">
+        <CardHeader className="pb-3">
+          <div className="flex items-center justify-between gap-3">
+            <div>
+              <p className="text-[11px] font-semibold uppercase tracking-[0.2em] text-emerald-700">
+                Environmental impact
+              </p>
+              <CardTitle className="mt-1 text-sm font-semibold text-slate-900">
+                Yearly CO₂e in human terms
+              </CardTitle>
+            </div>
+            <p className="text-[11px] text-slate-500">
+              Based on your current visits and region.
+            </p>
+          </div>
         </CardHeader>
-        <CardContent>
-          <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
+        <CardContent className="pt-0">
+          <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">
             {comparisons.map((comparison, index) => {
               const Icon = comparison.icon;
-              // Small micro-animation presets per type
+              // Small, subtle micro-animation presets per type
               const isCar = comparison.label.startsWith("Car");
               const isTree = comparison.label.startsWith("Trees");
               const isPhone = comparison.label.startsWith("Smartphone");
@@ -125,15 +137,15 @@ export function ComparisonCard({
               return (
                 <motion.div
                   key={index}
-                  initial={{ opacity: 0, scale: 0.9 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  transition={{ duration: 0.3, delay: 0.2 + index * 0.1 }}
-                  whileHover={{ y: -4, scale: 1.02 }}
-                  className={`${comparison.bgColor} rounded-lg p-4`}
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.3, delay: 0.2 + index * 0.07 }}
+                  whileHover={{ y: -3 }}
+                  className="rounded-xl border border-slate-100 bg-slate-50/60 p-3"
                 >
                   <div className="flex items-center gap-3">
                     <motion.div
-                      className={`rounded-full bg-white p-2 ${comparison.color}`}
+                      className={`flex h-9 w-9 items-center justify-center rounded-full bg-white shadow-sm ${comparison.color}`}
                       animate={
                         isCar
                           ? { x: [0, 2, -2, 0] }
@@ -152,13 +164,13 @@ export function ComparisonCard({
                       <Icon className="h-5 w-5" />
                     </motion.div>
                     <div>
-                      <p className="text-sm text-muted-foreground">
+                      <p className="text-xs text-slate-500">
                         {comparison.label}
                       </p>
-                      <p className={`text-2xl font-bold ${comparison.color}`}>
-                        {comparison.value}
+                      <p className="text-xl font-semibold text-slate-900">
+                        <span className={comparison.color}>{comparison.value}</span>
                       </p>
-                      <p className="text-xs text-muted-foreground">
+                      <p className="text-[11px] text-slate-500">
                         {comparison.unit}
                       </p>
                     </div>

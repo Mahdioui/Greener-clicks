@@ -12,8 +12,8 @@ interface LeafScoreProps {
  * ---------
  * Visualises the green score (0–100) as a leaf with three states:
  * - Healthy green leaf (score >= 80)
- * - Fading yellow/brown leaf (score 50–79)
- * - Dark brown leaf (score < 50)
+ * - Leaf under stress / turning brown (score 50–79)
+ * - Dark, wilting leaf (score < 50)
  *
  * This is intentionally simple and lightweight so it can later be
  * swapped for a Lottie animation if desired.
@@ -21,18 +21,18 @@ interface LeafScoreProps {
 export function LeafScore({ score }: LeafScoreProps) {
   const clamped = Math.max(0, Math.min(100, score));
 
-  let label = "Needs work";
-  let leafColor = "fill-amber-700 text-amber-800";
+  let label = "Wilting leaf";
+  let leafColor = "text-amber-900";
   let bgColor = "bg-amber-50";
 
   if (clamped >= 80) {
-    label = "Very green";
-    leafColor = "fill-emerald-500 text-emerald-700";
+    label = "Healthy leaf";
+    leafColor = "text-emerald-700";
     bgColor = "bg-emerald-50";
   } else if (clamped >= 50) {
-    label = "Getting there";
-    leafColor = "fill-lime-400 text-lime-700";
-    bgColor = "bg-lime-50";
+    label = "Leaf under stress";
+    leafColor = "text-amber-700";
+    bgColor = "bg-amber-50";
   }
 
   return (

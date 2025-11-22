@@ -1,30 +1,42 @@
-# GreenGlide (EcoSite Analyzer)
+# Green Click – Website Carbon Footprint Analyzer
 
-A full-stack web application that estimates a website's carbon footprint using the **Sustainable Web Design Model (SWDM v4)** methodology, inspired by WebsiteCarbon.com. Built with Next.js 14, TypeScript, TailwindCSS, Prisma, and Puppeteer.
+Green Click is a full‑stack web application that estimates a website's carbon footprint using the **Sustainable Web Design Model (SWDM v4)** methodology, inspired by WebsiteCarbon.com and other digital sustainability tools. It combines a precise CO₂‑equivalent (CO₂e) model with a polished, playful UI: animated dashboards, interactive games, and educational sections for non‑technical stakeholders.
 
 ## Features
 
-### 🔍 Advanced URL Analysis
-- **Headless Browser Analysis**: Uses Puppeteer to capture all network requests (CSS, JS, images, fonts, etc.)
-- **Resource Breakdown**: Detailed categorization of data transfer by resource type
-- **SWDM v4 Calculation**: Implements Sustainable Web Design Model v4 for accurate CO₂ estimation
-- **Green Hosting Detection**: Integrates with Green Web Foundation API to check if hosting is powered by renewable energy
-- **Real-time Analysis**: Captures actual page load with all resources
+### 🔍 URL Analysis & CO₂e Model
+- **Headless browser analysis** – Uses Puppeteer to capture all network requests (CSS, JS, images, fonts, etc.).
+- **Resource breakdown** – Detailed categorisation of data transfer by resource type.
+- **SWDM v4 CO₂e calculation** – Implements Sustainable Web Design Model v4 for CO₂‑equivalent estimation.
+- **Regional grid intensity** – Region selector (Global, EU, US, Asia, Africa) feeds different grid‑carbon factors.
+- **Green hosting detection** – Integrates with Green Web Foundation API to check if hosting is powered by renewable energy.
+- **Real‑time analysis** – Captures an actual page load with all resources.
+
+### 🖥️ Product‑grade, playful UI
+- **Homepage hero** – Calm, editorial hero with a metrics vignette, animated snapshot, and region‑aware URL analysis card.
+- **Interactive leaf savings strip** – Horizontal grid of animated leaf cards (`LeafSavingsStrip`) that visualise CO₂e savings from small optimisations, with subtle hover wiggle and tooltips.
+- **Visit journey timeline** – Scrollable timeline (`VisitJourneyTimeline`) showing Browser → Network → Hosting → Device with icons, CO₂e focus labels, and fade/slide‑in animations.
+- **Sticky site header & footer** – Global navigation (`SiteHeader`) and footer (`SiteFooter`) with clear links to Analyzer, Learn, How it works, and History.
 
 ### 📊 Comprehensive Results Dashboard
-- **EmissionsCard**: Displays CO₂ per visit, yearly emissions, page size, and a 0–100 green score
-- **ResourceBreakdown**: Visual breakdown of emissions by resource type (images, JS, CSS, fonts, other), including CO₂ share where available
-- **ComparisonCard**: Environmental impact comparisons (car km, trees, smartphone charges, flights, kettles boiled, streaming hours, burgers)
-- **EnergyGauge**: Circular progress indicator for energy efficiency score
-- **EmissionsChart**: Line graph showing monthly CO₂ trends
-- **RecommendationList**: Actionable recommendations with estimated CO₂ savings per optimization
+- **EmissionsCard** – Displays CO₂e per visit, yearly emissions, page size, and a 0–100 green score.
+- **ResourceBreakdown** – Visual breakdown of emissions by resource type (images, JS, CSS, fonts, other), including CO₂e share and mini leaf ratings per section.
+- **ComparisonCard** – Environmental impact comparisons (car km, trees, smartphone charges, flights, kettles boiled, streaming hours, burgers).
+- **EnergyGauge** – Circular progress indicator for energy efficiency score.
+- **EmissionsChart** – Line graph showing monthly CO₂e trends.
+- **RecommendationList** – Actionable recommendations with estimated CO₂e savings per optimisation.
+- **Scenario controls** – Adjustable monthly visits and region chips to instantly recalculate impact.
+
+### 🕹️ Games & Education
+- **Loading mini‑game** – Memory card game (`MemoryGame`) displayed while analysis runs, surfacing green‑web facts when matches are found.
+- **Results “learn & play” card** – Wide, horizontal version of the memory game plus fun‑fact chips.
+- **Learn page** – Curated links and explanations for sustainable web / green IT resources.
+- **How it works page** – Light, card‑based explanation of the methodology behind Green Click (no heavy math wall).
 
 ### 📈 Analysis History
-- **History Dashboard**: View all past analyses with trends over time
-- **Database Storage**: All analyses saved to database (SQLite for dev, PostgreSQL for production)
-- **Trend Charts**: Visualize CO₂ emissions over time
-
-
+- **History dashboard** – View all past analyses with trends over time.
+- **Database storage** – All analyses saved to the database (SQLite for dev, PostgreSQL for production).
+- **Trend charts** – Visualise CO₂e emissions over time.
 
 ## Tech Stack
 
@@ -51,7 +63,7 @@ A full-stack web application that estimates a website's carbon footprint using t
 1. Clone the repository:
 ```bash
 git clone <repository-url>
-cd "Website Carbon Emitter"
+cd Website_Carbon_Emitter
 ```
 
 2. Install dependencies:
@@ -97,22 +109,33 @@ npm run db:push
 │   │   ├── analyze/
 │   │   │   └── route.ts          # Main analysis API (Puppeteer + SWDM)
 │   │   └── history/
-│   │       └── route.ts           # Analysis history API
+│   │       └── route.ts          # Analysis history API
 │   ├── history/
-│   │   └── page.tsx               # History dashboard page
+│   │   └── page.tsx              # History dashboard page
 │   ├── results/
-│   │   └── page.tsx               # Results page
-│   ├── globals.css                # Global styles
-│   ├── layout.tsx                 # Root layout
-│   └── page.tsx                   # Homepage
+│   │   └── page.tsx              # Results page
+│   ├── learn/
+│   │   └── page.tsx              # Learn/resources page
+│   ├── methodology/
+│   │   └── page.tsx              # How it works / methodology page
+│   ├── globals.css               # Global styles
+│   ├── layout.tsx                # Root layout (SiteHeader + SiteFooter)
+│   └── page.tsx                  # Homepage (hero, leaf strip, journey timeline)
 ├── components/
-│   ├── ui/                        # Shadcn/UI components
+│   ├── ui/                       # Shadcn/UI components
 │   ├── EmissionsCard.tsx
 │   ├── ComparisonCard.tsx
 │   ├── EnergyGauge.tsx
-│   ├── ResourceBreakdown.tsx     # NEW: Resource breakdown visualization
-│   ├── RecommendationList.tsx    # Enhanced with CO₂ savings
+│   ├── ResourceBreakdown.tsx    # Resource breakdown visualisation
+│   ├── RecommendationList.tsx   # Recommendations with CO₂e savings
 │   ├── EmissionsChart.tsx
+│   ├── MemoryGame.tsx           # Card‑matching mini‑game
+│   ├── LoadingScreen.tsx        # Full‑screen loading overlay + game
+│   ├── LeafSavingsStrip.tsx     # Homepage leaf savings strip
+│   ├── VisitJourneyTimeline.tsx # Homepage visit journey timeline
+│   ├── LearnCarbon.tsx          # Compact “Learn about website carbon” section
+│   ├── SiteHeader.tsx           # Sticky navigation
+│   ├── SiteFooter.tsx           # Global footer
 │   └── SkeletonLoader.tsx
 ├── lib/
 │   ├── db.ts                      # Prisma client

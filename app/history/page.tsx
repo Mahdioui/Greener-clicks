@@ -66,7 +66,7 @@ export default function HistoryPage() {
 
   if (isLoading) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-green-50 to-emerald-50 p-4">
+      <div className="min-h-screen bg-[radial-gradient(circle_at_top,_#ECFDF5_0,_#F9FAFB_40%,_#FFFFFF_100%)] p-4">
         <div className="mx-auto max-w-7xl py-8">
           <div className="h-64 animate-pulse rounded-lg bg-gray-200"></div>
         </div>
@@ -75,7 +75,7 @@ export default function HistoryPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-green-50 to-emerald-50 p-4">
+    <div className="min-h-screen bg-[radial-gradient(circle_at_top,_#ECFDF5_0,_#F9FAFB_40%,_#FFFFFF_100%)] p-4">
       <div className="mx-auto max-w-7xl py-8">
         <motion.div
           initial={{ opacity: 0, y: -20 }}

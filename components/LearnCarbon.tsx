@@ -46,9 +46,9 @@ export function LearnCarbon() {
           Learn about website carbon
         </h2>
         <p className="mx-auto mt-2 max-w-2xl text-sm text-slate-600">
-          GreenGlide uses the Sustainable Web Design model and public grid data
-          to estimate how much CO₂ your pages emit—and how much you can save
-          with a few smart changes.
+          Green Click uses the Sustainable Web Design model and public grid data
+          to estimate how much CO₂‑equivalent (CO₂e) your pages emit—and how much
+          you can save with a few smart changes.
         </p>
       </div>
 
@@ -96,7 +96,7 @@ export function LearnCarbon() {
             <p>
               Reducing a page from 3&nbsp;MB to 1&nbsp;MB can cut per‑visit
               emissions by more than half. At 100k monthly visits, that&apos;s
-              the difference between emitting CO₂ equivalent to dozens of trees
+              the difference between emitting CO₂e equivalent to dozens of trees
               or just a handful.
             </p>
           </CardContent>
@@ -107,8 +107,8 @@ export function LearnCarbon() {
               <Leaf className="h-5 w-5" />
             </div>
             <p>
-              GreenGlide approximates regional grid intensity (e.g. Europe vs
-              US vs Asia) so you can see how CO₂ per visit changes if most of
+              Green Click approximates regional grid intensity (e.g. Europe vs
+              US vs Asia) so you can see how CO₂e per visit changes if most of
               your visitors are in a cleaner or more fossil‑heavy grid.
             </p>
           </CardContent>

@@ -1,0 +1,55 @@
+<svg width="1440" height="360" viewBox="0 0 1440 360" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="bannerBg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#ECFDF5"/>
+      <stop offset="100%" stop-color="#D1FAE5"/>
+    </linearGradient>
+  </defs>
+
+  <rect width="1440" height="360" fill="url(#bannerBg)"/>
+
+  <!-- Soft blobs -->
+  <ellipse cx="260" cy="220" rx="220" ry="140" fill="#A7F3D033"/>
+  <ellipse cx="1180" cy="160" rx="260" ry="160" fill="#6EE7B722"/>
+
+  <!-- Person-like silhouette with laptop -->
+  <g transform="translate(180 110)">
+    <circle cx="80" cy="40" r="32" fill="#022C22"/>
+    <circle cx="80" cy="40" r="20" fill="#ECFDF5"/>
+    <rect x="46" y="72" width="68" height="70" rx="18" fill="#059669"/>
+    <rect x="30" y="110" width="100" height="52" rx="10" fill="#0F766E"/>
+    <rect x="40" y="118" width="80" height="26" rx="6" fill="#0D9488"/>
+  </g>
+
+  <!-- Floating globe with leaves -->
+  <g transform="translate(580 70)">
+    <circle cx="120" cy="110" r="80" fill="#10B981"/>
+    <circle cx="120" cy="110" r="80" fill="none" stroke="#022C22" stroke-width="2"/>
+    <!-- Continents -->
+    <path d="M90 105 C 78 90, 86 75, 110 70 C 126 68, 136 74, 143 82 C 150 90, 150 98, 145 106 C 138 118, 126 122, 112 122 C 100 122, 93 118, 90 105 Z" fill="#ECFDF5"/>
+    <path d="M135 130 C 148 125, 162 130, 170 140 C 176 150, 173 160, 164 167 C 154 176, 140 178, 131 174 C 124 171, 121 166, 121 160 C 121 149, 127 135, 135 130 Z" fill="#D1FAE5"/>
+    <!-- Leaves -->
+    <path d="M190 60 C 176 62, 166 72, 163 88 C 179 86, 189 76, 190 60 Z" fill="#22C55E"/>
+    <path d="M202 76 C 188 77, 179 86, 177 100 C 192 99, 201 90, 202 76 Z" fill="#4ADE80"/>
+  </g>
+
+  <!-- Circuit board hint -->
+  <g transform="translate(980 120)" stroke="#10B981" stroke-width="1.6" stroke-linecap="round">
+    <rect x="40" y="40" width="160" height="90" rx="14" fill="#020617" stroke="#22C55E"/>
+    <path d="M0 60 H40"/>
+    <path d="M0 90 H40"/>
+    <path d="M200 70 H240"/>
+    <path d="M120 130 V170"/>
+  </g>
+
+  <!-- Decorative dots -->
+  <g fill="#A7F3D0">
+    <circle cx="420" cy="90" r="3"/>
+    <circle cx="520" cy="60" r="3"/>
+    <circle cx="980" cy="80" r="3"/>
+    <circle cx="1090" cy="230" r="3"/>
+    <circle cx="360" cy="260" r="3"/>
+  </g>
+</svg>
+
+

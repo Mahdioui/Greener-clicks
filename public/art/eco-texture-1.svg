@@ -1,0 +1,57 @@
+<svg width="1200" height="800" viewBox="0 0 1200 800" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="paper" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#F8F5F0"/>
+      <stop offset="1" stop-color="#E3D5C5"/>
+    </linearGradient>
+    <linearGradient id="sage" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#9BB89A"/>
+      <stop offset="1" stop-color="#1D3A2F"/>
+    </linearGradient>
+  </defs>
+
+  <rect width="1200" height="800" fill="url(#paper)"/>
+
+  <!-- Soft organic shapes -->
+  <ellipse cx="260" cy="200" rx="220" ry="140" fill="#9BB89A22"/>
+  <ellipse cx="940" cy="220" rx="260" ry="160" fill="#1D3A2F18"/>
+  <ellipse cx="620" cy="620" rx="320" ry="190" fill="#C9D7C522"/>
+
+  <!-- Subtle vertical bands -->
+  <rect x="120" y="120" width="160" height="420" rx="24" fill="#FFFFFFAA"/>
+  <rect x="360" y="160" width="200" height="380" rx="28" fill="#FFFFFFDD"/>
+  <rect x="600" y="200" width="220" height="340" rx="28" fill="#FFFFFFDD"/>
+  <rect x="860" y="160" width="160" height="380" rx="24" fill="#FFFFFFCC"/>
+
+  <!-- Sage accent lines -->
+  <path d="M150 520 C 260 490 340 510 430 495" stroke="url(#sage)" stroke-width="4" stroke-linecap="round" stroke-opacity="0.5"/>
+  <path d="M650 540 C 740 520 820 530 930 510" stroke="#9BB89A" stroke-width="3" stroke-linecap="round" stroke-opacity="0.45"/>
+
+  <!-- Small data blocks -->
+  <rect x="380" y="190" width="80" height="10" rx="5" fill="#E3D5C5"/>
+  <rect x="380" y="210" width="140" height="10" rx="5" fill="#E3D5C5AA"/>
+  <rect x="620" y="240" width="120" height="12" rx="6" fill="#9BB89A66"/>
+  <rect x="620" y="265" width="60" height="10" rx="5" fill="#9BB89A33"/>
+
+  <!-- Circles hinting at nodes / requests -->
+  <circle cx="220" cy="260" r="12" fill="#9BB89A"/>
+  <circle cx="260" cy="300" r="8" fill="#9BB89A88"/>
+  <circle cx="300" cy="260" r="6" fill="#1D3A2F66"/>
+
+  <circle cx="880" cy="260" r="10" fill="#1D3A2F99"/>
+  <circle cx="920" cy="300" r="7" fill="#9BB89A88"/>
+  <circle cx="960" cy="260" r="6" fill="#1D3A2F66"/>
+
+  <!-- Gentle grain via tiny dots -->
+  <g fill="#C2B49E55">
+    <circle cx="140" cy="140" r="1.2"/>
+    <circle cx="220" cy="420" r="1.2"/>
+    <circle cx="520" cy="360" r="1.2"/>
+    <circle cx="760" cy="460" r="1.2"/>
+    <circle cx="1040" cy="340" r="1.2"/>
+    <circle cx="680" cy="140" r="1.2"/>
+    <circle cx="420" cy="540" r="1.2"/>
+  </g>
+</svg>
+
+
