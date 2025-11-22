@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
-import puppeteer from "puppeteer";
+import chromium from "@sparticuz/chromium";
+import puppeteer from "puppeteer-core";
 import {
   calculateSWDM,
   calculateYearlyCO2,
@@ -54,16 +55,15 @@ export async function POST(request: NextRequest) {
 
     const domain = validUrl.hostname;
 
-    // Launch Puppeteer
+    // Launch a Chromium instance that is compatible with serverless environments
+    // (Netlify, AWS Lambda, etc.) using @sparticuz/chromium.
+    const executablePath = await chromium.executablePath();
+
     browser = await puppeteer.launch({
-      headless: true,
-      args: [
-        "--no-sandbox",
-        "--disable-setuid-sandbox",
-        "--disable-dev-shm-usage",
-        "--disable-accelerated-2d-canvas",
-        "--disable-gpu",
-      ],
+      args: chromium.args,
+      defaultViewport: chromium.defaultViewport,
+      executablePath,
+      headless: chromium.headless,
     });
 
     const page = await browser.newPage();
