@@ -13,6 +13,11 @@ import {
 import { checkGreenHosting } from "@/lib/green-hosting";
 import { prisma } from "@/lib/db";
 
+// Ensure this route always runs dynamically on the Node.js runtime.
+export const dynamic = "force-dynamic";
+export const runtime = "nodejs";
+export const maxDuration = 60;
+
 interface NetworkRequest {
   url: string;
   size: number;
