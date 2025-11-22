@@ -1,6 +1,15 @@
 import { NextRequest, NextResponse } from "next/server";
 import puppeteer from "puppeteer";
-import { calculateSWDM, calculateYearlyCO2, calculateComparisons, categorizeResource, type ResourceBreakdown } from "@/lib/swdm-calculator";
+import {
+  calculateSWDM,
+  calculateYearlyCO2,
+  calculateComparisons,
+  categorizeResource,
+  getConfigForRegion,
+  allocateCO2ByResource,
+  calculateGreenScore,
+  type ResourceBreakdown,
+} from "@/lib/swdm-calculator";
 import { checkGreenHosting } from "@/lib/green-hosting";
 import { prisma } from "@/lib/db";
 
@@ -128,10 +137,42 @@ export async function POST(request: NextRequest) {
     // Convert total bytes to GB
     const dataTransferGB = resourceBreakdown.total / (1024 * 1024 * 1024);
 
-    // Calculate CO₂ using SWDM
-    const swdmResult = calculateSWDM(dataTransferGB, isGreenHosting);
+    // Calculate CO₂ using SWDM with region-aware grid intensity
+    const swdmConfig = getConfigForRegion(region);
+    const swdmResult = calculateSWDM(dataTransferGB, isGreenHosting, swdmConfig);
     const yearlyCO2 = calculateYearlyCO2(swdmResult.co2PerVisit, monthlyVisits);
     const comparisons = calculateComparisons(yearlyCO2, region);
+
+    // CO₂ allocation per resource type for insights & savings
+    const co2ByResource = allocateCO2ByResource(
+      swdmResult.co2PerVisit,
+      resourceBreakdown
+    );
+
+    // Green score (0–100, higher is better)
+    const greenScore = calculateGreenScore(swdmResult.co2PerVisit);
+
+    // Comparison to an "average" website for friendly competition
+    const AVERAGE_CO2_PER_VISIT = 1.76; // g, inspired by WebsiteCarbon's published averages
+    const averageYearlyCO2 =
+      AVERAGE_CO2_PER_VISIT * monthlyVisits * 12;
+    const cleanerRatio =
+      yearlyCO2 > 0 ? 1 - yearlyCO2 / averageYearlyCO2 : 0;
+    // Optional multi-region impact comparison (uses same data transfer, different grid mix)
+    const regionsToCompare = ["eu", "us", "asia", "africa"] as const;
+    const regionalImpact = regionsToCompare.map((r) => {
+      const cfg = getConfigForRegion(r);
+      const result = calculateSWDM(dataTransferGB, isGreenHosting, cfg);
+      const yearly = calculateYearlyCO2(result.co2PerVisit, monthlyVisits);
+      return {
+        region: r,
+        co2PerVisit: result.co2PerVisit,
+        yearlyCO2: yearly,
+      };
+    });
+    const cleanerThanAverage = Math.round(
+      Math.max(-100, Math.min(100, cleanerRatio * 100))
+    );
 
     // Prepare analysis data
     const analysisData = {
@@ -153,6 +194,14 @@ export async function POST(request: NextRequest) {
       comparisons,
       breakdown: swdmResult.breakdown,
       greenHostingInfo: greenHostingResult,
+      co2ByResource,
+      greenScore,
+      averageWebsite: {
+        co2PerVisit: AVERAGE_CO2_PER_VISIT,
+        yearlyCO2: Math.round(averageYearlyCO2 * 100) / 100,
+        cleanerThanAverage, // positive = cleaner, negative = more polluting
+      },
+      regionalImpact,
     };
 
     // Save to database

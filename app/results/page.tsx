@@ -4,11 +4,11 @@ import { useEffect, useState, useCallback, Suspense } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
 import { EmissionsCard } from "@/components/EmissionsCard";
 import { ComparisonCard } from "@/components/ComparisonCard";
-import { EnergyGauge } from "@/components/EnergyGauge";
 import { RecommendationList } from "@/components/RecommendationList";
 import { EmissionsChart } from "@/components/EmissionsChart";
 import { ResourceBreakdown } from "@/components/ResourceBreakdown";
 import { SkeletonLoader } from "@/components/SkeletonLoader";
+import { LoadingScreen } from "@/components/LoadingScreen";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
@@ -26,6 +26,9 @@ interface AnalysisResult {
     trees: number;
     charges: number;
     shortFlights?: number;
+    kettleBoils?: number;
+    streamingHours?: number;
+    beefBurgers?: number;
   };
   url: string;
   monthlyVisits: number;
@@ -47,21 +50,45 @@ interface AnalysisResult {
     green: boolean;
     hostedBy?: string;
   };
+  co2ByResource?: {
+    images: number;
+    js: number;
+    css: number;
+    fonts: number;
+    other: number;
+  };
+  greenScore?: number;
+  averageWebsite?: {
+    co2PerVisit: number;
+    yearlyCO2: number;
+    cleanerThanAverage: number;
+  };
 }
 
 function ResultsContent() {
   const searchParams = useSearchParams();
   const router = useRouter();
   const url = searchParams.get("url") || "";
+  const initialRegion =
+    (searchParams.get("region") as
+      | "global"
+      | "eu"
+      | "us"
+      | "asia"
+      | "africa"
+      | null) || "global";
 
   const [analysis, setAnalysis] = useState<AnalysisResult | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [monthlyVisits, setMonthlyVisits] = useState(10000);
   const [isRecalculating, setIsRecalculating] = useState(false);
+  const [region, setRegion] = useState<
+    "global" | "eu" | "us" | "asia" | "africa"
+  >(initialRegion);
 
   const fetchAnalysis = useCallback(
-    async (targetUrl: string, visits: number) => {
+    async (targetUrl: string, visits: number, selectedRegion: string) => {
       try {
         setIsLoading(true);
         setError(null);
@@ -74,6 +101,7 @@ function ResultsContent() {
           body: JSON.stringify({
             url: targetUrl,
             monthlyVisits: visits,
+            region: selectedRegion,
           }),
         });
 
@@ -83,7 +111,7 @@ function ResultsContent() {
         }
 
         const data = await response.json();
-        // Map API response to match our interface
+        // Map API response to match our interface while remaining backwards compatible
         setAnalysis({
           co2PerVisit: data.co2PerVisit || data.co2_per_visit,
           yearlyCO2: data.yearlyCO2 || data.yearly_co2,
@@ -94,13 +122,20 @@ function ResultsContent() {
             trees: data.comparisons?.trees,
             charges: data.comparisons?.charges,
             shortFlights: data.comparisons?.shortFlights,
+            kettleBoils: data.comparisons?.kettleBoils,
+            streamingHours: data.comparisons?.streamingHours,
+            beefBurgers: data.comparisons?.beefBurgers,
           },
           url: data.url,
-          monthlyVisits: data.monthlyVisits || data.monthly_visits || monthlyVisits,
+          monthlyVisits:
+            data.monthlyVisits || data.monthly_visits || monthlyVisits,
           resourceBreakdown: data.resourceBreakdown,
           breakdown: data.breakdown,
           totalRequests: data.totalRequests,
           greenHostingInfo: data.greenHostingInfo,
+          co2ByResource: data.co2ByResource,
+          greenScore: data.greenScore,
+          averageWebsite: data.averageWebsite,
         });
       } catch (err: any) {
         setError(err.message || "An error occurred");
@@ -113,27 +148,23 @@ function ResultsContent() {
 
   useEffect(() => {
     if (url) {
-      fetchAnalysis(url, monthlyVisits);
+      fetchAnalysis(url, monthlyVisits, region);
     } else {
       setError("No URL provided");
       setIsLoading(false);
     }
-  }, [url, fetchAnalysis]);
+  }, [url, fetchAnalysis, region, monthlyVisits]);
 
   const handleRecalculate = async () => {
     if (!url) return;
     setIsRecalculating(true);
-    await fetchAnalysis(url, monthlyVisits);
+    await fetchAnalysis(url, monthlyVisits, region);
     setIsRecalculating(false);
   };
 
   if (isLoading) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-green-50 to-emerald-50 p-4">
-        <div className="mx-auto max-w-7xl py-8">
-          <SkeletonLoader />
-        </div>
-      </div>
+      <LoadingScreen />
     );
   }
 
@@ -198,7 +229,7 @@ function ResultsContent() {
           )}
         </motion.div>
 
-        {/* Monthly Visits Input */}
+        {/* Monthly Visits & Region Input */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -207,24 +238,55 @@ function ResultsContent() {
         >
           <Card className="border-green-200 bg-white">
             <CardContent className="p-4">
-              <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-                <div className="flex-1">
-                  <label
-                    htmlFor="visits"
-                    className="mb-2 block text-sm font-medium"
-                  >
-                    Monthly Visits
-                  </label>
-                  <Input
-                    id="visits"
-                    type="number"
-                    value={monthlyVisits}
-                    onChange={(e) =>
-                      setMonthlyVisits(Number(e.target.value) || 0)
-                    }
-                    min="0"
-                    className="max-w-xs"
-                  />
+              <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
+                <div className="flex-1 space-y-3 sm:flex sm:items-end sm:gap-6 sm:space-y-0">
+                  <div className="flex-1">
+                    <label
+                      htmlFor="visits"
+                      className="mb-1 block text-sm font-medium"
+                    >
+                      Monthly visits
+                    </label>
+                    <Input
+                      id="visits"
+                      type="number"
+                      value={monthlyVisits}
+                      onChange={(e) =>
+                        setMonthlyVisits(Number(e.target.value) || 0)
+                      }
+                      min="0"
+                      className="max-w-xs"
+                    />
+                  </div>
+                  <div>
+                    <label
+                      htmlFor="region"
+                      className="mb-1 block text-sm font-medium"
+                    >
+                      Region (grid mix)
+                    </label>
+                    <select
+                      id="region"
+                      value={region}
+                      onChange={(e) =>
+                        setRegion(
+                          e.target.value as
+                            | "global"
+                            | "eu"
+                            | "us"
+                            | "asia"
+                            | "africa"
+                        )
+                      }
+                      className="h-10 rounded-md border border-gray-200 bg-white px-2 text-sm text-gray-700 shadow-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500"
+                    >
+                      <option value="global">Global mix</option>
+                      <option value="eu">Europe</option>
+                      <option value="us">United States</option>
+                      <option value="asia">Asia</option>
+                      <option value="africa">Africa</option>
+                    </select>
+                  </div>
                 </div>
                 <Button
                   onClick={handleRecalculate}
@@ -232,7 +294,9 @@ function ResultsContent() {
                   className="bg-green-600 hover:bg-green-700"
                 >
                   <RefreshCw
-                    className={`mr-2 h-4 w-4 ${isRecalculating ? "animate-spin" : ""}`}
+                    className={`mr-2 h-4 w-4 ${
+                      isRecalculating ? "animate-spin" : ""
+                    }`}
                   />
                   Recalculate
                 </Button>
@@ -241,16 +305,15 @@ function ResultsContent() {
           </Card>
         </motion.div>
 
-        {/* Results Grid */}
-        <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
+        {/* Results Summary */}
+        <div className="grid grid-cols-1 gap-6">
           <EmissionsCard
             co2PerVisit={analysis.co2PerVisit}
             yearlyCO2={analysis.yearlyCO2}
             pageSizeMB={analysis.pageSizeMB}
             greenHosting={analysis.greenHosting}
+            greenScore={analysis.greenScore}
           />
-
-          <EnergyGauge yearlyCO2={analysis.yearlyCO2} />
         </div>
 
         <div className="mt-6">
@@ -258,12 +321,19 @@ function ResultsContent() {
             carKm={analysis.comparisons.carKm}
             trees={analysis.comparisons.trees}
             charges={analysis.comparisons.charges}
+            shortFlights={analysis.comparisons.shortFlights}
+            kettleBoils={analysis.comparisons.kettleBoils}
+            streamingHours={analysis.comparisons.streamingHours}
+            beefBurgers={analysis.comparisons.beefBurgers}
           />
         </div>
 
         {analysis.resourceBreakdown && (
           <div className="mt-6">
-            <ResourceBreakdown breakdown={analysis.resourceBreakdown} />
+            <ResourceBreakdown
+              breakdown={analysis.resourceBreakdown}
+              co2ByResource={analysis.co2ByResource}
+            />
           </div>
         )}
 

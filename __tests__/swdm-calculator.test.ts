@@ -3,6 +3,9 @@ import {
   calculateYearlyCO2,
   calculateComparisons,
   categorizeResource,
+  getConfigForRegion,
+  allocateCO2ByResource,
+  calculateGreenScore,
 } from "@/lib/swdm-calculator";
 
 describe("SWDM Calculator", () => {
@@ -54,6 +57,57 @@ describe("SWDM Calculator", () => {
       const yearlyCO2 = 8; // grams
       const comparisons = calculateComparisons(yearlyCO2, "global");
       expect(comparisons.charges).toBe(1000); // 8 / 0.008
+    });
+
+    it("should calculate additional fun comparisons", () => {
+      const yearlyCO2 = 700; // grams
+      const comparisons = calculateComparisons(yearlyCO2, "global");
+      expect(comparisons.kettleBoils).toBeCloseTo(10); // 700 / 70
+      expect(comparisons.streamingHours).toBeGreaterThan(0);
+      expect(comparisons.beefBurgers).toBeGreaterThan(0);
+    });
+  });
+
+  describe("getConfigForRegion", () => {
+    it("should override carbon intensity for a known region", () => {
+      const euConfig = getConfigForRegion("eu");
+      const globalConfig = getConfigForRegion("global");
+      expect(euConfig.carbonIntensity).not.toBe(globalConfig.carbonIntensity);
+    });
+  });
+
+  describe("allocateCO2ByResource", () => {
+    it("should apportion CO₂ by byte share", () => {
+      const breakdown = {
+        images: 500,
+        js: 300,
+        css: 100,
+        fonts: 50,
+        other: 50,
+        total: 1000,
+      };
+      const result = allocateCO2ByResource(10, breakdown); // 10g total
+      const sum =
+        result.images + result.js + result.css + result.fonts + result.other;
+      expect(sum).toBeCloseTo(10, 1);
+      // Images should get half of the emissions
+      expect(result.images).toBeCloseTo(5, 1);
+    });
+  });
+
+  describe("calculateGreenScore", () => {
+    it("should give high score for very low CO₂", () => {
+      expect(calculateGreenScore(0.1)).toBe(100);
+    });
+
+    it("should give low score for very high CO₂", () => {
+      expect(calculateGreenScore(5)).toBe(0);
+    });
+
+    it("should be between 0 and 100", () => {
+      const score = calculateGreenScore(1.5);
+      expect(score).toBeGreaterThanOrEqual(0);
+      expect(score).toBeLessThanOrEqual(100);
     });
   });
 

@@ -7,15 +7,21 @@ import { Card, CardContent } from "@/components/ui/card";
 import { motion } from "framer-motion";
 import { Search, Leaf, Globe, Zap, History } from "lucide-react";
 import Link from "next/link";
+import { LearnCarbon } from "@/components/LearnCarbon";
 
 export default function HomePage() {
   const [url, setUrl] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const [region, setRegion] = useState<"global" | "eu" | "us" | "asia" | "africa">("global");
 
   const handleAnalyze = () => {
     if (url.trim()) {
       setIsLoading(true);
-      window.location.href = `/results?url=${encodeURIComponent(url)}`;
+      const params = new URLSearchParams({
+        url,
+        region,
+      });
+      window.location.href = `/results?${params.toString()}`;
     }
   };
 
@@ -85,7 +91,7 @@ export default function HomePage() {
           </Link>
         </div>
 
-        {/* Header */}
+        {/* Header / Hero */}
         <motion.div
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -93,16 +99,16 @@ export default function HomePage() {
           className="text-center"
         >
           <div className="mb-4 flex justify-center">
-            <div className="rounded-full bg-green-100 p-3">
-              <Leaf className="h-8 w-8 text-green-600" />
+            <div className="rounded-full bg-green-100 px-4 py-2 text-xs font-semibold uppercase tracking-wide text-green-700">
+              EcoSite Analyzer
             </div>
           </div>
-          <h1 className="mb-4 text-5xl font-bold text-gray-900 sm:text-6xl">
-            EcoSite Analyzer
+          <h1 className="mb-4 text-4xl font-bold text-gray-900 sm:text-5xl md:text-6xl">
+            How green is your website?
           </h1>
-          <p className="mx-auto max-w-2xl text-xl text-gray-600">
-            Measure your website's carbon footprint and discover ways to reduce
-            your environmental impact
+          <p className="mx-auto max-w-2xl text-lg text-gray-600 sm:text-xl">
+            Measure the CO₂ impact of your website in seconds and discover{" "}
+            playful, science‑backed ways to make it cleaner and faster.
           </p>
         </motion.div>
 
@@ -114,7 +120,7 @@ export default function HomePage() {
           className="mx-auto mt-12 max-w-2xl"
         >
           <Card className="border-green-200 shadow-xl">
-            <CardContent className="p-6">
+            <CardContent className="space-y-4 p-6">
               <div className="flex flex-col gap-4 sm:flex-row">
                 <Input
                   type="url"
@@ -137,6 +143,28 @@ export default function HomePage() {
                   <Search className="mr-2 h-4 w-4" />
                   {isLoading ? "Analyzing..." : "Analyze"}
                 </Button>
+              </div>
+              <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
+                <p className="text-xs text-gray-500">
+                  Tip: Choose a region to see how different electricity grids
+                  change your CO₂ results.
+                </p>
+                <div className="flex items-center gap-2">
+                  <span className="text-xs text-gray-600">Region</span>
+                  <select
+                    value={region}
+                    onChange={(e) =>
+                      setRegion(e.target.value as typeof region)
+                    }
+                    className="h-9 rounded-md border border-gray-200 bg-white px-2 text-xs text-gray-700 shadow-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500"
+                  >
+                    <option value="global">Global mix</option>
+                    <option value="eu">Europe</option>
+                    <option value="us">United States</option>
+                    <option value="asia">Asia</option>
+                    <option value="africa">Africa</option>
+                  </select>
+                </div>
               </div>
             </CardContent>
           </Card>
@@ -195,6 +223,9 @@ export default function HomePage() {
             </CardContent>
           </Card>
         </motion.div>
+
+        {/* Learn about website carbon */}
+        <LearnCarbon />
 
         {/* Footer */}
         <motion.div

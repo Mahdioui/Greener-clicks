@@ -12,9 +12,9 @@ A full-stack web application that estimates a website's carbon footprint using t
 - **Real-time Analysis**: Captures actual page load with all resources
 
 ### 📊 Comprehensive Results Dashboard
-- **EmissionsCard**: Displays CO₂ per visit, yearly emissions, and page size
-- **ResourceBreakdown**: Visual breakdown of emissions by resource type (images, JS, CSS, fonts, other)
-- **ComparisonCard**: Environmental impact comparisons (car km, trees, smartphone charges, flights)
+- **EmissionsCard**: Displays CO₂ per visit, yearly emissions, page size, and a 0–100 green score
+- **ResourceBreakdown**: Visual breakdown of emissions by resource type (images, JS, CSS, fonts, other), including CO₂ share where available
+- **ComparisonCard**: Environmental impact comparisons (car km, trees, smartphone charges, flights, kettles boiled, streaming hours, burgers)
 - **EnergyGauge**: Circular progress indicator for energy efficiency score
 - **EmissionsChart**: Line graph showing monthly CO₂ trends
 - **RecommendationList**: Actionable recommendations with estimated CO₂ savings per optimization
@@ -118,8 +118,7 @@ npm run db:push
 │   ├── db.ts                      # Prisma client
 │   ├── utils.ts                   # Utility functions
 │   ├── swdm-calculator.ts         # SWDM v4 calculation engine
-│   ├── green-hosting.ts           # Green Web Foundation integration
-│   └── co2-calculator.ts          # Legacy calculator (deprecated)
+│   └── green-hosting.ts           # Green Web Foundation integration
 ├── prisma/
 │   └── schema.prisma              # Database schema
 └── __tests__/
@@ -166,7 +165,10 @@ Analyzes a website using Puppeteer and returns comprehensive CO₂ emission data
     "carKm": 520,
     "trees": 2.97,
     "charges": 7800000,
-    "shortFlights": 0.54
+    "shortFlights": 0.54,
+    "kettleBoils": 900,
+    "streamingHours": 1134.55,
+    "beefBurgers": 10.4
   },
   "url": "https://example.com",
   "monthlyVisits": 10000
@@ -212,6 +214,7 @@ CO₂ (g) = Total Energy × Carbon Intensity
 - **Car km equivalent**: Based on regional averages (global: 120g CO₂/km)
 - **Trees needed**: Average tree absorbs ~21kg CO₂ per year
 - **Smartphone charges**: ~0.008 kg CO₂ per charge
+- **Kettles of water boiled**: ~70g CO₂ per boil
 - **Short flights**: ~115kg CO₂ per passenger
 
 ## Green Hosting

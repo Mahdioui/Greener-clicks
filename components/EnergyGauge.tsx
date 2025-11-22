@@ -7,25 +7,35 @@ import { Gauge } from "lucide-react";
 interface EnergyGaugeProps {
   yearlyCO2: number;
   maxCO2?: number;
+  greenScore?: number;
 }
 
 export function EnergyGauge({
   yearlyCO2,
   maxCO2 = 1000,
+  greenScore,
 }: EnergyGaugeProps) {
-  const percentage = Math.min((yearlyCO2 / maxCO2) * 100, 100);
+  // Prefer the backend-provided green score (0–100). If it's not available,
+  // fall back to a rough score derived from yearly CO₂ relative to maxCO2.
+  const fallbackPercentage = Math.min((yearlyCO2 / maxCO2) * 100, 100);
+  const score =
+    typeof greenScore === "number"
+      ? Math.max(0, Math.min(100, greenScore))
+      : Math.max(0, Math.min(100, 100 - fallbackPercentage));
+
+  const percentage = score;
   const circumference = 2 * Math.PI * 70; // radius = 70
   const offset = circumference - (percentage / 100) * circumference;
 
   const getColor = () => {
-    if (percentage < 33) return "text-green-600";
-    if (percentage < 66) return "text-yellow-600";
+    if (percentage >= 80) return "text-green-600";
+    if (percentage >= 50) return "text-yellow-600";
     return "text-red-600";
   };
 
   const getBgColor = () => {
-    if (percentage < 33) return "bg-green-100";
-    if (percentage < 66) return "bg-yellow-100";
+    if (percentage >= 80) return "bg-green-100";
+    if (percentage >= 50) return "bg-yellow-100";
     return "bg-red-100";
   };
 
@@ -82,9 +92,9 @@ export function EnergyGauge({
                   transition={{ delay: 0.8 }}
                   className={`text-3xl font-bold ${getColor()}`}
                 >
-                  {Math.round(100 - percentage)}%
+                  {Math.round(percentage)}%
                 </motion.p>
-                <p className="text-sm text-muted-foreground">Efficient</p>
+                <p className="text-sm text-muted-foreground">Green score</p>
               </div>
             </div>
           </div>
