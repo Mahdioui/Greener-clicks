@@ -218,7 +218,7 @@ export default function HomePage() {
                 Eco Recommendations
               </h3>
               <p className="text-sm text-muted-foreground">
-                Get actionable tips to reduce your website's carbon footprint
+                Get actionable tips to reduce your website&apos;s carbon footprint
               </p>
             </CardContent>
           </Card>

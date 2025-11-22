@@ -128,7 +128,7 @@ function ResultsContent() {
           },
           url: data.url,
           monthlyVisits:
-            data.monthlyVisits || data.monthly_visits || monthlyVisits,
+            data.monthlyVisits || data.monthly_visits || visits,
           resourceBreakdown: data.resourceBreakdown,
           breakdown: data.breakdown,
           totalRequests: data.totalRequests,
