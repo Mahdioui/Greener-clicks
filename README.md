@@ -24,12 +24,7 @@ A full-stack web application that estimates a website's carbon footprint using t
 - **Database Storage**: All analyses saved to database (SQLite for dev, PostgreSQL for production)
 - **Trend Charts**: Visualize CO₂ emissions over time
 
-### 🎨 Beautiful UI
-- Modern green/tech theme with gradient backgrounds
-- Smooth animations using Framer Motion
-- Responsive design for all devices
-- Skeleton loaders for better UX
-- Real-time recalculation with editable monthly visits
+
 
 ## Tech Stack
 
@@ -292,9 +287,6 @@ npm start
 - [WebsiteCarbon.com Methodology](https://www.websitecarbon.com/how-does-it-work/)
 - [Green Web Foundation](https://www.thegreenwebfoundation.org/)
 
-## License
-
-MIT
 
 ## Contributing
 
