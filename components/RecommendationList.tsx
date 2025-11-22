@@ -12,14 +12,16 @@ interface Recommendation {
   applicable: boolean; // Whether this recommendation applies to the current site
 }
 
+interface ResourceBreakdownData {
+  images: number;
+  js: number;
+  css: number;
+  fonts: number;
+  other: number;
+}
+
 interface RecommendationListProps {
-  resourceBreakdown?: {
-    images: number;
-    js: number;
-    css: number;
-    fonts: number;
-    other: number;
-  };
+  resourceBreakdown?: ResourceBreakdownData;
   greenHosting?: boolean;
   co2PerVisit?: number;
 }
@@ -30,7 +32,10 @@ export function RecommendationList({
   co2PerVisit = 0,
 }: RecommendationListProps) {
   // Calculate potential savings based on resource breakdown
-  const calculateSavings = (category: keyof typeof resourceBreakdown, reductionPercent: number): string => {
+  const calculateSavings = (
+    category: keyof ResourceBreakdownData,
+    reductionPercent: number
+  ): string => {
     if (!resourceBreakdown) return "~0.01g";
     const sizeKB = resourceBreakdown[category];
     if (sizeKB === 0) return "N/A";
@@ -45,63 +50,63 @@ export function RecommendationList({
   const recommendations: Recommendation[] = [
     {
       title: "Compress Images",
-      impact: "High",
+      impact: "High" as const,
       desc: "Use WebP or AVIF format and compress images. Can reduce image size by 60-80%.",
       co2Saving: calculateSavings("images", 70),
       applicable: (resourceBreakdown?.images || 0) > 100, // >100KB
     },
     {
       title: "Minify JS & CSS",
-      impact: "High",
+      impact: "High" as const,
       desc: "Remove whitespace, comments, and unused code. Can reduce file sizes by 30-50%.",
       co2Saving: calculateSavings("js", 40) + " (JS), " + calculateSavings("css", 40) + " (CSS)",
       applicable: (resourceBreakdown?.js || 0) > 50 || (resourceBreakdown?.css || 0) > 20,
     },
     {
       title: "Enable Caching",
-      impact: "High",
+      impact: "High" as const,
       desc: "Implement browser and CDN caching to reduce repeat downloads. Can save 40-60% on return visits.",
       co2Saving: `~${(co2PerVisit * 0.5).toFixed(2)}g per return visit`,
       applicable: true,
     },
     {
       title: "Use Green Hosting",
-      impact: "High",
+      impact: "High" as const,
       desc: "Switch to hosting providers powered by renewable energy. Reduces data center emissions by ~50%.",
       co2Saving: greenHosting ? "Already using" : `~${(co2PerVisit * 0.15).toFixed(2)}g per visit`,
       applicable: !greenHosting,
     },
     {
       title: "Optimize Fonts",
-      impact: "Medium",
+      impact: "Medium" as const,
       desc: "Use system fonts or subset custom fonts to load only needed characters. Can reduce font size by 50-70%.",
       co2Saving: calculateSavings("fonts", 60),
       applicable: (resourceBreakdown?.fonts || 0) > 50,
     },
     {
       title: "Lazy Load Images",
-      impact: "Medium",
+      impact: "Medium" as const,
       desc: "Load images only when they're about to enter the viewport. Reduces initial page load by 30-50%.",
       co2Saving: calculateSavings("images", 40),
       applicable: (resourceBreakdown?.images || 0) > 200,
     },
     {
       title: "Reduce Third-Party Scripts",
-      impact: "High",
+      impact: "High" as const,
       desc: "Limit analytics, tracking, and advertising scripts. Each script adds network overhead and processing.",
       co2Saving: calculateSavings("js", 20) + " (estimated)",
       applicable: (resourceBreakdown?.js || 0) > 100,
     },
     {
       title: "Use Efficient CSS",
-      impact: "Medium",
+      impact: "Medium" as const,
       desc: "Remove unused CSS and use modern CSS features. Tools like PurgeCSS can reduce CSS by 40-60%.",
       co2Saving: calculateSavings("css", 50),
       applicable: (resourceBreakdown?.css || 0) > 50,
     },
     {
       title: "Avoid Auto-playing Videos",
-      impact: "High",
+      impact: "High" as const,
       desc: "Videos are large files. Only load videos when users explicitly request them.",
       co2Saving: "~0.5-2g per video",
       applicable: (resourceBreakdown?.other || 0) > 500,
