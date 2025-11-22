@@ -1,0 +1,49 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite" // Use "postgresql" for production
+  url      = env("DATABASE_URL")
+}
+
+model Analysis {
+  id            String   @id @default(cuid())
+  url           String
+  domain        String
+  createdAt     DateTime @default(now())
+  
+  // Page metrics
+  pageSizeMB    Float
+  totalRequests Int
+  greenHosting  Boolean  @default(false)
+  
+  // Resource breakdown (in bytes)
+  imagesSize    Int      @default(0)
+  jsSize        Int      @default(0)
+  cssSize       Int      @default(0)
+  fontsSize     Int      @default(0)
+  otherSize     Int      @default(0)
+  
+  // CO₂ calculations
+  co2PerVisit   Float    // grams
+  yearlyCO2     Float    // grams (based on monthly visits)
+  monthlyVisits Int      @default(10000)
+  
+  // Comparisons
+  carKm         Float
+  trees         Float
+  charges       Float
+  
+  // Metadata
+  userAgent     String?
+  region        String?  @default("global")
+  
+  @@index([url])
+  @@index([domain])
+  @@index([createdAt])
+}
+
